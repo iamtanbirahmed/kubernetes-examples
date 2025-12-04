@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky"
+    "prepare": "husky",
+    "infra:deploy": "nx run aws:deploy",
+    "infra:destroy": "nx run aws:destroy",
+    "nx": "nx"
   },
   "private": true,
   "devDependencies": {
@@ -44,7 +47,8 @@
   },
   "workspaces": [
     "packages/*",
-    "apps/*"
+    "apps/*",
+    "infra/*"
   ],
   "dependencies": {
     "@nestjs/common": "^11.0.0",

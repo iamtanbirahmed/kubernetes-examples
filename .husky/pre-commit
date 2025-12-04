@@ -1,2 +1,3 @@
+npx nx format:write
 npx nx format:check
 npx nx affected --target=lint,build
