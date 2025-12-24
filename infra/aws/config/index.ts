@@ -18,7 +18,7 @@ export const environments: Record<string, EnvironmentConfig> = {
   staging: {
     name: 'staging',
     cidr: '10.10.0.0/16',
-    maxAzs: 2,
+    maxAzs: 1,
     eks: {
       minSize: 2,
       maxSize: 4,
