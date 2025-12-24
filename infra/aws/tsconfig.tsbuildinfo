@@ -1,0 +1,1 @@
+{"root":["./bin/main.ts","./config/index.ts","./stacks/data-stack.ts","./stacks/eks-stack.ts","./stacks/network-stack.ts","./test/aws.test.ts"],"version":"5.9.3"}

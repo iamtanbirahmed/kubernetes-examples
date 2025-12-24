@@ -2,7 +2,7 @@
   "name": "@kubernetes-examples/aws",
   "version": "0.1.0",
   "bin": {
-    "aws": "bin/aws.js"
+    "aws": "bin/main.js"
   },
   "scripts": {
     "build": "tsc",
@@ -16,17 +16,7 @@
         "executor": "nx:run-commands",
         "options": {
           "command": "npm run build",
-          "args": [
-            "--node-env=production"
-          ],
           "cwd": "infra/aws"
-        },
-        "configurations": {
-          "development": {
-            "args": [
-              "--node-env=development"
-            ]
-          }
         }
       },
       "lint": {
@@ -39,8 +29,15 @@
       "deploy": {
         "executor": "nx:run-commands",
         "options": {
-          "command": "npm run cdk deploy",
+          "command": "npm run cdk deploy -- --context ENV={args.envName} --require-approval=never --all",
           "cwd": "infra/aws"
+        },
+        "configurations": {
+          "staging": {
+            "args": [
+              "--envName=staging"
+            ]
+          }
         }
       },
       "test": {
@@ -53,15 +50,29 @@
       "destroy": {
         "executor": "nx:run-commands",
         "options": {
-          "command": "npm run cdk destroy",
+          "command": "npm run cdk destroy -- --context ENV={args.envName} --all --force",
           "cwd": "infra/aws"
+        },
+        "configurations": {
+          "staging": {
+            "args": [
+              "--envName=staging"
+            ]
+          }
         }
       },
       "diff": {
         "executor": "nx:run-commands",
         "options": {
-          "command": "npm run cdk diff",
+          "command": "npm run cdk diff -- --context ENV={args.envName}",
           "cwd": "infra/aws"
+        },
+        "configurations": {
+          "staging": {
+            "args": [
+              "--envName=staging"
+            ]
+          }
         }
       },
       "bootstrap": {
@@ -74,8 +85,15 @@
       "synth": {
         "executor": "nx:run-commands",
         "options": {
-          "command": "npm run cdk synth",
+          "command": "npm run cdk synth -- --context ENV={args.envName}",
           "cwd": "infra/aws"
+        },
+        "configurations": {
+          "staging": {
+            "args": [
+              "--envName=staging"
+            ]
+          }
         }
       }
     }
