@@ -18,6 +18,11 @@ jobs:
     name: Destroy Infrastructure
     runs-on: ubuntu-latest
     steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ca-central-1
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -28,7 +33,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24.11.1
-
+          cache: 'npm'
       - name: Install Dependencies
         run: npm ci
 
