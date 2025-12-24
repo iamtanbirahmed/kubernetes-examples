@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-// import { NetworkStack } from '../stacks/network-stack';
+import { NetworkStack } from '../stacks/network-stack';
 import { DataStack } from '../stacks/data-stack';
 // import { EksStack } from '../stacks/eks-stack';
 import { environments } from '../config';
@@ -20,18 +20,19 @@ const envAWS = {
   account: process.env.CDK_DEFAULT_ACCOUNT,
   region: process.env.CDK_DEFAULT_REGION,
 };
+const envPrefix = config.name.toUpperCase();
 
-const data = new DataStack(app, `${config.name}-DataStack`, {
+const data = new DataStack(app, `${envPrefix}-DataStack`, {
   env: envAWS,
   config,
 });
 
-// const network = new NetworkStack(app, `${config.name}-NetworkStack`, {
-//   env: envAWS,
-//   config,
-// });
+const network = new NetworkStack(app, `${envPrefix}-NetworkStack`, {
+  env: envAWS,
+  config,
+});
 
-// const compute = new EksStack(app, `${config.name}-EksStack`, {
+// const compute = new EksStack(app, `${envPrefix}-EksStack`, {
 //   env: envAWS,
 //   config,
 //   vpc: network.vpc,
