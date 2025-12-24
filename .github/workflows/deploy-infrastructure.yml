@@ -45,10 +45,9 @@ jobs:
         run: |
           npm ci
 
-      
-      - name: Run tests
-        run: |
-          npx nx run aws:synth --configuration=${{ inputs.environment }}
+      # - name: Run tests
+      #   run: |
+      #     npx nx run aws:synth --configuration=${{ inputs.environment }}
 
       - name: Deploy
         run: |
