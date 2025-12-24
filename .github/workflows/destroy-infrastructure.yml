@@ -1,0 +1,36 @@
+name: Destroy Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - demo
+          - prod
+
+jobs:
+  destroy_infrastructure:
+    name: Destroy Infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: tree:0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.11.1
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Destroy Infrastructure
+        run: npx nx aws:destroy --configuration=${{ inputs.environment }}
