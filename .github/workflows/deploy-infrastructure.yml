@@ -13,6 +13,10 @@ on:
           - demo
           - prod
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build_and_test:
     name: Build and Test
@@ -21,6 +25,11 @@ jobs:
       ENV: ${{ inputs.environment }}
 
     steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ca-central-1
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
@@ -36,12 +45,7 @@ jobs:
         run: |
           npm ci
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ca-central-1
-
+      
       - name: Run tests
         run: |
           npx nx run aws:synth --configuration=${{ inputs.environment }}
