@@ -40,4 +40,4 @@ jobs:
         run: npm ci
 
       - name: Destroy Infrastructure
-        run: npx nx aws:destroy --configuration=${{ inputs.environment }}
+        run: npx nx run aws:destroy --configuration=${{ inputs.environment }}
