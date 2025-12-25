@@ -1,0 +1,32 @@
+## this is a placeholder workflow to deploy to infrastructure
+name: CD
+on:
+  # Trigger 1: Automatic
+  release:
+    types: [published]
+
+  # Trigger 2: Manual
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'The tag to deploy/notify (e.g., v1.0.4)'
+        required: true
+        type: string
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine Tag
+        # This logic selects the manual input if it exists, otherwise uses the release event tag
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "RELEASE_TAG=${{ inputs.tag_name }}" >> $GITHUB_ENV
+          else
+            echo "RELEASE_TAG=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+          fi
+
+      - name: Execute Post-Release Tasks
+        run: |
+          echo "Processing release for tag: $RELEASE_TAG"
+          # Add your deployment or notification commands here
