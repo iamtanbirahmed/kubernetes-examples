@@ -1,3 +1,13 @@
+## 0.1.2 (2025-12-26)
+
+### 🩹 Fixes
+
+- **ci:** added GITHUB_TOKEN for authentication ([fe3e598](https://github.com/iamtanbirahmed/kubernetes-examples/commit/fe3e598))
+
+### ❤️ Thank You
+
+- Tanbir Ahmed
+
 ## 0.1.1 (2025-12-26)
 
 ### 🚀 Features
