@@ -1,3 +1,13 @@
+## 0.1.3 (2025-12-26)
+
+### 🩹 Fixes
+
+- **ci:** added PAT for authentication ([fe52e4b](https://github.com/iamtanbirahmed/kubernetes-examples/commit/fe52e4b))
+
+### ❤️ Thank You
+
+- Tanbir Ahmed
+
 ## 0.1.2 (2025-12-26)
 
 ### 🩹 Fixes
