@@ -18,7 +18,8 @@
     "projects": ["infra/*", "apps/*"],
     "projectsRelationship": "fixed",
     "version": {
-      "conventionalCommits": true
+      "conventionalCommits": true,
+      "fallbackCurrentVersionResolver": "disk"
     },
     "changelog": {
       "workspaceChangelog": {
