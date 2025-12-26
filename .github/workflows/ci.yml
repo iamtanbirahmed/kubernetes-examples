@@ -8,11 +8,11 @@ on:
       - main
 
 permissions:
-  actions: read
+  actions: write
   contents: read
 
 jobs:
-  main:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,7 +20,23 @@ jobs:
           filter: tree:0
           fetch-depth: 0
 
-      # keeping these comments for future reference
+      - name: Cache Node Modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Cache Nx Storage
+        uses: actions/cache@v4
+        with:
+          path: .nx/cache
+          key: ${{ runner.os }}-nx-${{ github.sha}}
+          restore-keys: |
+            ${{ runner.os }}-nx
+
+          # keeping these comments for future reference
       # This enables task distribution via Nx Cloud
       # Run this command as early as possible, before dependencies are installed
       # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
@@ -31,10 +47,29 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24.11.1
-          cache: 'npm'
 
       - run: npm ci
 
       # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
       # - run: npx nx-cloud record -- echo Hello World
-      - run: npx nx run-many -t lint test build typecheck
+      - run: npx nx run-many -t lint test build typecheck --parallel=3
+
+  release:
+    needs: verify
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && !contains(github.event.head_commit.message, 'chore(release)')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.11.1
+
+      - run: npm ci
+      - run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - run: npx nx release --skip-publish
