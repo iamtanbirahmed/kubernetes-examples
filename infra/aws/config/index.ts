@@ -25,7 +25,7 @@ export const environments: Record<string, EnvironmentConfig> = {
       instanceTypes: ['t3.micro'],
       version: EKS_CONFIG.VERSION,
     },
-    ecrRepos: ['simple-rest-api', 'payment-service', 'frontend-app'],
+    ecrRepos: ['command', 'query', 'worker'],
   },
   demo: {
     name: 'demo',
@@ -37,7 +37,7 @@ export const environments: Record<string, EnvironmentConfig> = {
       instanceTypes: ['t3.micro'],
       version: EKS_CONFIG.VERSION,
     },
-    ecrRepos: ['auth-service', 'payment-service', 'frontend-app'],
+    ecrRepos: ['command', 'query', 'worker'],
   },
   prod: {
     name: 'prod',

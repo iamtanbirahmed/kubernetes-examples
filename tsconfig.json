@@ -4,10 +4,22 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/simple-rest-api-e2e"
+      "path": "./apps/worker-e2e"
     },
     {
-      "path": "./apps/simple-rest-api"
+      "path": "./apps/worker"
+    },
+    {
+      "path": "./apps/command-e2e"
+    },
+    {
+      "path": "./apps/command"
+    },
+    {
+      "path": "./apps/query-e2e"
+    },
+    {
+      "path": "./apps/query"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
-  "name": "@kubernetes-examples/simple-rest-api",
-  "version": "0.1.3",
+  "name": "@kubernetes-examples/command",
+  "version": "0.0.1",
   "private": true,
   "nx": {
     "targets": {
@@ -11,7 +11,7 @@
           "args": [
             "--node-env=production"
           ],
-          "cwd": "apps/simple-rest-api"
+          "cwd": "apps/command"
         },
         "configurations": {
           "development": {
@@ -28,8 +28,8 @@
         "cache": true,
         "executor": "@nx/js:prune-lockfile",
         "outputs": [
-          "{workspaceRoot}/apps/simple-rest-api/dist/package.json",
-          "{workspaceRoot}/apps/simple-rest-api/dist/package-lock.json"
+          "{workspaceRoot}/apps/command/dist/package.json",
+          "{workspaceRoot}/apps/command/dist/package-lock.json"
         ],
         "options": {
           "buildTarget": "build"
@@ -41,7 +41,7 @@
         ],
         "cache": true,
         "outputs": [
-          "{workspaceRoot}/apps/simple-rest-api/dist/workspace_modules"
+          "{workspaceRoot}/apps/command/dist/workspace_modules"
         ],
         "executor": "@nx/js:copy-workspace-modules",
         "options": {
@@ -63,15 +63,15 @@
           "build"
         ],
         "options": {
-          "buildTarget": "@kubernetes-examples/simple-rest-api:build",
+          "buildTarget": "@kubernetes-examples/command:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@kubernetes-examples/simple-rest-api:build:development"
+            "buildTarget": "@kubernetes-examples/command:build:development"
           },
           "production": {
-            "buildTarget": "@kubernetes-examples/simple-rest-api:build:production"
+            "buildTarget": "@kubernetes-examples/command:build:production"
           }
         }
       },

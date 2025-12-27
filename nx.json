@@ -65,7 +65,11 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/simple-rest-api-e2e/**/*"]
+      "exclude": [
+        "apps/worker-e2e/**/*",
+        "apps/command-e2e/**/*",
+        "apps/query-e2e/**/*"
+      ]
     }
   ],
   "targetDefaults": {
