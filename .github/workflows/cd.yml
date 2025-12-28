@@ -14,10 +14,14 @@ on:
         type: string
 
 jobs:
-  notify:
+  deploy:
+    name: Build and Push
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [command, query, worker]
     steps:
-      - name: Determine Tag
+      - name: Get Release Tag
         # This logic selects the manual input if it exists, otherwise uses the release event tag
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
@@ -26,7 +30,39 @@ jobs:
             echo "RELEASE_TAG=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
           fi
 
-      - name: Execute Post-Release Tasks
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ca-central-1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Extract Metadata
+        id: meta
+        shell: bash
         run: |
-          echo "Processing release for tag: $RELEASE_TAG"
-          # Add your deployment or notification commands here
+          # Get short SHA (first 7 characters)
+          echo "SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build and Push Docker Image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ matrix.service }}
+          SHA_TAG: ${{ steps.meta.outputs.SHA_SHORT }}
+          RELEASE_TAG: ${{ env.RELEASE_TAG }}
+
+        run: |
+          # Build
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$RELEASE_TAG ./apps/${{ matrix.service }}/Dockerfile .
+
+          # Tag
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$RELEASE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$RELEASE_TAG-$SHA_TAG
+
+          # Push
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$RELEASE_TAG-$SHA_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$RELEASE_TAG
