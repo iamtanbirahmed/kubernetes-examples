@@ -15,6 +15,9 @@ export class DataStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: DataStackProps) {
     super(scope, id, props);
 
+    cdk.Tags.of(this).add('Environment', props.config.name);
+    cdk.Tags.of(this).add('Project', 'k8-examples');
+
     // 1. S3 Bucket for Helm Charts
     this.chartBucket = new s3.Bucket(this, 'HelmChartBucket', {
       versioned: true,
@@ -31,23 +34,24 @@ export class DataStack extends cdk.Stack {
     });
 
     // 2. Dynamic ECR Repositories from Config List
-    // props.config.ecrRepos.forEach((repoName) => {
-    //   const repo = new ecr.Repository(this, `Repo-${repoName}`, {
-    //     repositoryName: `${props.config.name}-${repoName}`,
-    //     imageScanOnPush: true,
-    //     removalPolicy:
-    //       props.config.name === 'prod'
-    //         ? cdk.RemovalPolicy.RETAIN
-    //         : cdk.RemovalPolicy.DESTROY,
-    //     emptyOnDelete: props.config.name !== 'prod',
-    //     lifecycleRules: [
-    //       {
-    //         maxImageCount: 50, // Cost saving: keep only last 50 images
-    //         description: 'Keep last 50 images',
-    //       },
-    //     ],
-    //   });
-    //   this.repositories.push(repo);
-    // });
+    props.config.ecrRepos.forEach((repoName) => {
+      const repo = new ecr.Repository(this, `Repo-${repoName}`, {
+        repositoryName: `${props.config.projectName}-${repoName}`,
+        imageScanOnPush: true,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+        // removalPolicy:
+        //   props.config.name === 'prod'
+        //     ? cdk.RemovalPolicy.RETAIN
+        //     : cdk.RemovalPolicy.DESTROY,
+        emptyOnDelete: props.config.name !== 'prod',
+        lifecycleRules: [
+          {
+            maxImageCount: props.config.maxImageCount, // Cost saving: keep only last 50 images
+            description: `Keep last ${props.config.maxImageCount} images`,
+          },
+        ],
+      });
+      this.repositories.push(repo);
+    });
   }
 }

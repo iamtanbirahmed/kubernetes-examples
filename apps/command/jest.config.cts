@@ -10,7 +10,7 @@ const swcJestConfig = JSON.parse(
 swcJestConfig.swcrc = false;
 
 module.exports = {
-  displayName: '@kubernetes-examples/simple-rest-api',
+  displayName: '@kubernetes-examples/command',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {

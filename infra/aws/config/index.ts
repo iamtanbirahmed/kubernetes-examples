@@ -12,20 +12,24 @@ export interface EnvironmentConfig {
     version: string; // e.g., '1.28'
   };
   ecrRepos: string[]; // List of repo names to generate
+  maxImageCount: number;
+  projectName: string;
 }
 
 export const environments: Record<string, EnvironmentConfig> = {
   staging: {
     name: 'staging',
     cidr: '10.10.0.0/16',
-    maxAzs: 1,
+    maxAzs: 0,
     eks: {
       minSize: 2,
       maxSize: 4,
       instanceTypes: ['t3.micro'],
       version: EKS_CONFIG.VERSION,
     },
-    ecrRepos: ['simple-rest-api', 'payment-service', 'frontend-app'],
+    ecrRepos: ['command', 'query', 'worker'],
+    maxImageCount: 1,
+    projectName: 'k8-examples',
   },
   demo: {
     name: 'demo',
@@ -37,7 +41,9 @@ export const environments: Record<string, EnvironmentConfig> = {
       instanceTypes: ['t3.micro'],
       version: EKS_CONFIG.VERSION,
     },
-    ecrRepos: ['auth-service', 'payment-service', 'frontend-app'],
+    ecrRepos: ['command', 'query', 'worker'],
+    maxImageCount: 1,
+    projectName: 'k8-examples',
   },
   prod: {
     name: 'prod',
@@ -50,5 +56,7 @@ export const environments: Record<string, EnvironmentConfig> = {
       version: EKS_CONFIG.VERSION,
     },
     ecrRepos: ['auth-service', 'payment-service', 'frontend-app'],
+    maxImageCount: 1,
+    projectName: 'k8-examples',
   },
 };
