@@ -62,7 +62,7 @@ jobs:
 
         run: |
           # Build
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$RELEASE_TAG ./apps/${{ matrix.service }}/Dockerfile .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$RELEASE_TAG -f ./apps/${{ matrix.service }}/Dockerfile .
 
           # Tag
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$RELEASE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$RELEASE_TAG-$SHA_TAG
