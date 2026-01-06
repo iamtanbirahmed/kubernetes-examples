@@ -3,7 +3,7 @@ import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { NetworkStack } from '../stacks/network-stack';
 import { DataStack } from '../stacks/data-stack';
-// import { EksStack } from '../stacks/eks-stack';
+import { EksStack } from '../stacks/eks-stack';
 import { environments } from '../config';
 
 const app = new cdk.App();
@@ -32,10 +32,10 @@ const network = new NetworkStack(app, `${envPrefix}-NetworkStack`, {
   config,
 });
 
-// const compute = new EksStack(app, `${envPrefix}-EksStack`, {
-//   env: envAWS,
-//   config,
-//   vpc: network.vpc,
-// });
+const compute = new EksStack(app, `${envPrefix}-EksStack`, {
+  env: envAWS,
+  config,
+  vpc: network.vpc,
+});
 
 // compute.addDependency(network);

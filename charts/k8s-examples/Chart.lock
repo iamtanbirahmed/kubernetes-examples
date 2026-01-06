@@ -1,0 +1,15 @@
+dependencies:
+- name: command
+  repository: file://../command
+  version: 0.1.0
+- name: query
+  repository: file://../query
+  version: 0.1.0
+- name: worker
+  repository: file://../worker
+  version: 0.1.0
+- name: k8s-ingress
+  repository: file://../k8s-ingress
+  version: 0.1.0
+digest: sha256:31e68ac8cf6c48f3f6d3e6ff6d527cf426648002a74f5900fc385cef9f51e416
+generated: "2025-12-30T10:49:10.553633-05:00"

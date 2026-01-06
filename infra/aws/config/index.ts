@@ -1,5 +1,5 @@
 export const EKS_CONFIG = {
-  VERSION: '1.31',
+  VERSION: '1.34',
 } as const;
 export interface EnvironmentConfig {
   name: 'staging' | 'demo' | 'prod';
@@ -22,14 +22,14 @@ export const environments: Record<string, EnvironmentConfig> = {
     cidr: '10.10.0.0/16',
     maxAzs: 0,
     eks: {
-      minSize: 2,
-      maxSize: 4,
-      instanceTypes: ['t3.micro'],
+      minSize: 1,
+      maxSize: 1,
+      instanceTypes: ['t3.medium'],
       version: EKS_CONFIG.VERSION,
     },
     ecrRepos: ['command', 'query', 'worker'],
     maxImageCount: 1,
-    projectName: 'k8-examples',
+    projectName: 'k8s-examples',
   },
   demo: {
     name: 'demo',
@@ -43,7 +43,7 @@ export const environments: Record<string, EnvironmentConfig> = {
     },
     ecrRepos: ['command', 'query', 'worker'],
     maxImageCount: 1,
-    projectName: 'k8-examples',
+    projectName: 'k8s-examples',
   },
   prod: {
     name: 'prod',
@@ -57,6 +57,6 @@ export const environments: Record<string, EnvironmentConfig> = {
     },
     ecrRepos: ['auth-service', 'payment-service', 'frontend-app'],
     maxImageCount: 1,
-    projectName: 'k8-examples',
+    projectName: 'k8s-examples',
   },
 };

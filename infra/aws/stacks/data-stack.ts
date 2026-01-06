@@ -16,7 +16,7 @@ export class DataStack extends cdk.Stack {
     super(scope, id, props);
 
     cdk.Tags.of(this).add('Environment', props.config.name);
-    cdk.Tags.of(this).add('Project', 'k8-examples');
+    cdk.Tags.of(this).add('Project', 'k8s-examples');
 
     // 1. S3 Bucket for Helm Charts
     this.chartBucket = new s3.Bucket(this, 'HelmChartBucket', {
