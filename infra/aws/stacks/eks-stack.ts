@@ -29,6 +29,8 @@ export class EksStack extends cdk.Stack {
       vpcSubnets: [{ subnetType: ec2.SubnetType.PUBLIC }],
       defaultCapacity: 0,
       endpointAccess: eks.EndpointAccess.PUBLIC_AND_PRIVATE,
+      authenticationMode: eks.AuthenticationMode.API_AND_CONFIG_MAP,
+      bootstrapClusterCreatorAdminPermissions: true
     });
 
     this.cluster.addNodegroupCapacity('WorkerNodes', {
