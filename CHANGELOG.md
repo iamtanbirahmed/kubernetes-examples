@@ -1,3 +1,14 @@
+## 0.1.4 (2026-03-01)
+
+### 🩹 Fixes
+
+- **cd:** updated repositoy name ([2295fa1](https://github.com/iamtanbirahmed/kubernetes-examples/commit/2295fa1))
+- **infra:** 4 workflow should automatically create an eks cluster ([#13](https://github.com/iamtanbirahmed/kubernetes-examples/pull/13))
+
+### ❤️ Thank You
+
+- Tanbir Ahmed @iamtanbirahmed
+
 ## 0.1.3 (2025-12-26)
 
 ### 🩹 Fixes

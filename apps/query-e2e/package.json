@@ -1,6 +1,6 @@
 {
   "name": "@kubernetes-examples/query-e2e",
-  "version": "0.0.1",
+  "version": "0.1.4",
   "private": true,
   "nx": {
     "implicitDependencies": [
