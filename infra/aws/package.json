@@ -36,6 +36,12 @@
           "staging": {
             "args": [
               "--envName=staging"
+            ],
+            "fileReplacements": [
+              {
+                "replace": "infra/aws/config/dev.json",
+                "with": "infra/aws/config/staging.json"
+              }
             ]
           }
         }

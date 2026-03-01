@@ -5,6 +5,7 @@ dist
 tmp
 out-tsc
 **/*.tgz
+**/*.env
 
 # dependencies
 node_modules

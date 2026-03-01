@@ -10,6 +10,7 @@ import LBPolicyJson from '../config/lb_policy';
 interface EksStackProps extends cdk.StackProps {
   config: EnvironmentConfig;
   vpc: ec2.IVpc;
+  principal?: string;
 }
 
 export class EksStack extends cdk.Stack {
@@ -30,7 +31,23 @@ export class EksStack extends cdk.Stack {
       defaultCapacity: 0,
       endpointAccess: eks.EndpointAccess.PUBLIC_AND_PRIVATE,
       authenticationMode: eks.AuthenticationMode.API_AND_CONFIG_MAP,
-      bootstrapClusterCreatorAdminPermissions: true
+      bootstrapClusterCreatorAdminPermissions: true,
+    });
+
+    const adminUser = iam.User.fromUserArn(
+      this,
+      'AdminUser',
+      props.principal as string
+    );
+
+    new eks.AccessEntry(this, 'AdminUserAccess', {
+      cluster: this.cluster,
+      principal: adminUser.userArn,
+      accessPolicies: [
+        eks.AccessPolicy.fromAccessPolicyName('AmazonEKSAdminPolicy', {
+          accessScopeType: eks.AccessScopeType.CLUSTER,
+        }),
+      ],
     });
 
     this.cluster.addNodegroupCapacity('WorkerNodes', {
