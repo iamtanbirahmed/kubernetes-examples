@@ -15,24 +15,24 @@ export class NetworkStack extends cdk.Stack {
     const envPrefix = props.config.name.toUpperCase();
 
     cdk.Tags.of(this).add('Environment', envPrefix);
-    cdk.Tags.of(this).add('Project', `k8-examples`);
+    cdk.Tags.of(this).add('Project', `k8s-examples`);
 
     this.vpc = new ec2.Vpc(this, 'EksVpc', {
       vpcName: `${envPrefix}-vpc`,
       ipAddresses: ec2.IpAddresses.cidr(props.config.cidr),
-      maxAzs: props.config.maxAzs,
-      natGateways: props.config.maxAzs,
+      maxAzs: 2,
+      natGateways: 0, // No NAT Gateways for a public-only VPC
       subnetConfiguration: [
         {
           cidrMask: 24,
           name: 'Public',
           subnetType: ec2.SubnetType.PUBLIC,
         },
-        {
-          cidrMask: 24,
-          name: 'Private',
-          subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
-        },
+        // {
+        //   cidrMask: 24,
+        //   name: 'Private',
+        //   subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+        // },
       ],
     });
 
@@ -40,8 +40,9 @@ export class NetworkStack extends cdk.Stack {
     this.vpc.publicSubnets.forEach((subnet) => {
       cdk.Tags.of(subnet).add('kubernetes.io/role/elb', '1');
     });
-    this.vpc.privateSubnets.forEach((subnet) => {
-      cdk.Tags.of(subnet).add('kubernetes.io/role/internal-elb', '1');
-    });
+
+    // this.vpc.privateSubnets.forEach((subnet) => {
+    //   cdk.Tags.of(subnet).add('kubernetes.io/role/internal-elb', '1');
+    // });
   }
 }

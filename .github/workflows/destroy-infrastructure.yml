@@ -41,3 +41,5 @@ jobs:
 
       - name: Destroy Infrastructure
         run: npx nx run aws:destroy --configuration=${{ inputs.environment }}
+        env:
+          AWS_PRINCIPAL_ARN: ${{ secrets.AWS_PRINCIPAL_ARN }}

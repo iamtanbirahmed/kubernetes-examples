@@ -12,9 +12,10 @@ async function bootstrap() {
   const globalPrefix = 'query';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3002;
-  await app.listen(port);
+  const host = process.env.HOST || '0.0.0.0';
+  await app.listen(port, host);
   Logger.log(
-    `🚀 Query Service is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Query Service is running on: http://${host}:${port}/${globalPrefix}`
   );
 }
 

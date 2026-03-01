@@ -36,6 +36,12 @@
           "staging": {
             "args": [
               "--envName=staging"
+            ],
+            "fileReplacements": [
+              {
+                "replace": "infra/aws/config/dev.json",
+                "with": "infra/aws/config/staging.json"
+              }
             ]
           }
         }
@@ -109,6 +115,8 @@
     "typescript": "~5.9.3"
   },
   "dependencies": {
+    "@aws-cdk/lambda-layer-kubectl-v31": "^2.1.0",
+    "@aws-cdk/lambda-layer-kubectl-v34": "^2.0.0",
     "aws-cdk-lib": "2.215.0",
     "constructs": "^10.0.0"
   }

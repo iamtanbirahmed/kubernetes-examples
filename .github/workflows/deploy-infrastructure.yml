@@ -52,3 +52,5 @@ jobs:
       - name: Deploy
         run: |
           npx nx run aws:deploy --configuration=${{ inputs.environment }}
+        env:
+          AWS_PRINCIPAL_ARN: ${{ secrets.AWS_PRINCIPAL_ARN }}

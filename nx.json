@@ -58,7 +58,8 @@
       "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint"
-      }
+      },
+      "exclude": ["charts/**/*"]
     },
     {
       "plugin": "@nx/jest/plugin",
