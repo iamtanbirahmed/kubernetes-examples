@@ -32,4 +32,4 @@ dependencies:
     repository: file://../worker
   - name: k8s-ingress
     version: 0.1.4
-    repository: file://../k8s-ingres
+    repository: file://../k8s-ingress
