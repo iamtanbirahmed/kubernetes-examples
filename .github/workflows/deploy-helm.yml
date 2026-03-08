@@ -25,6 +25,9 @@ jobs:
   deploy-helm:
     name: Deploy to Kubernetes
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -60,9 +63,9 @@ jobs:
           else
             IMAGE_TAG="${{ inputs.release_tag }}-${{ steps.meta.outputs.SHA_SHORT }}"
           fi
-          
+
           echo "Deploying with IMAGE_TAG: $IMAGE_TAG"
-          
+
           helm upgrade --install k8s-examples ./charts/k8s-examples \
             --namespace default \
             -f ./charts/k8s-examples/values-eks.yaml \
