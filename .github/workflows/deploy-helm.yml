@@ -1,0 +1,63 @@
+name: Helm Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target Environment'
+        required: true
+        default: 'demo'
+        type: choice
+        options:
+          - demo
+          - staging
+          - prod
+      release_tag:
+        description: 'Release tag to deploy (e.g., v1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  deploy-helm:
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Extract Metadata
+        id: meta
+        shell: bash
+        run: |
+          echo "SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ca-central-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      
+      - name: Setup kubeconfig
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+        run: |
+          aws eks update-kubeconfig --region ca-central-1 --name ${ENVIRONMENT}-k8s-examples
+
+      - name: Deploy with Helm
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ inputs.release_tag }}-${{ steps.meta.outputs.SHA_SHORT }}
+        run: |
+          helm upgrade --install k8s-examples ./charts/k8s-examples \
+            --namespace default \
+            -f ./charts/k8s-examples/values-eks.yaml \
+            --set command.image.repository=$ECR_REGISTRY/k8s-examples-command \
+            --set command.image.tag=$IMAGE_TAG \
+            --set query.image.repository=$ECR_REGISTRY/k8s-examples-query \
+            --set query.image.tag=$IMAGE_TAG \
+            --set worker.image.repository=$ECR_REGISTRY/k8s-examples-worker \
+            --set worker.image.tag=$IMAGE_TAG

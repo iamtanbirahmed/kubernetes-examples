@@ -2,14 +2,20 @@
 
 command:
   image:
-    repository: 661188442028.dkr.ecr.ca-central-1.amazonaws.com/k8-examples-command
-    tag: v0.1.3-58d1e3c
+    repository: ''
+    tag: ''
     pullPolicy: IfNotPresent
 
 query:
   image:
-    repository: 661188442028.dkr.ecr.ca-central-1.amazonaws.com/k8-examples-query
-    tag: v0.1.3-58d1e3c
+    repository: ''
+    tag: ''
+    pullPolicy: IfNotPresent
+
+worker:
+  image:
+    repository: ''
+    tag: ''
     pullPolicy: IfNotPresent
 
 k8s-ingress:
@@ -49,6 +55,20 @@ k8s-ingress:
           }
         }
 
+      # URL Rewrite Action for Worker Service
+      alb.ingress.kubernetes.io/actions.worker-api: >
+        {
+          "Type": "forward",
+          "ForwardConfig": {
+            "TargetGroups": [
+              {
+                "ServiceName": "{{ .Release.Name }}-worker",
+                "ServicePort": 3003
+              }
+            ]
+          }
+        }
+
       # Default 404 Action
       alb.ingress.kubernetes.io/actions.default-404: >
         {
@@ -74,4 +94,9 @@ k8s-ingress:
           - path: /query
             pathType: Prefix
             serviceName: query-api
+            servicePort: 'use-annotation'
+
+          - path: /worker
+            pathType: Prefix
+            serviceName: worker-api
             servicePort: 'use-annotation'
