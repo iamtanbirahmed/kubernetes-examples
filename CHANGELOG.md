@@ -1,3 +1,13 @@
+## 0.1.5 (2026-03-08)
+
+### 🩹 Fixes
+
+- **cd:** versionbump script to update helm charts ([#15](https://github.com/iamtanbirahmed/kubernetes-examples/pull/15))
+
+### ❤️ Thank You
+
+- Tanbir Ahmed @iamtanbirahmed
+
 ## 0.1.4 (2026-03-01)
 
 ### 🩹 Fixes
