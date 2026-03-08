@@ -50,7 +50,7 @@ spec:
               service:
                 name: {{ tpl .serviceName $ }}
                 port:
-                {{- if eq .servicePort "use-annotation" }}
+                {{- if eq ( toString .servicePort ) "use-annotation" }}
                   name: use-annotation
                 {{- else }} 
                   number: {{ .servicePort }}
