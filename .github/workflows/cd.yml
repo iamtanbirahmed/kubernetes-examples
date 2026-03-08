@@ -44,7 +44,6 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git commit -am "chore(release): bump chart versions to ${{ env.RELEASE_TAG }}" || echo "No changes to commit"
           git push origin HEAD:${{ github.event.repository.default_branch || 'main' }}
-          
   deploy:
     needs: upgrade
     name: Build and Push
@@ -97,4 +96,4 @@ jobs:
 
           # Push
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$RELEASE_TAG-$SHA_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$RELEASE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$RELEASE_TAG  
